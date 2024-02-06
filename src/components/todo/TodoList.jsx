@@ -13,6 +13,7 @@ const TodoList = ({ headTitle, todos, onDeleteTodoItem, onToggleTodoItem }) => {
 
           todos.map((todo) => (
             <TodoItem
+              key={todo.id}
               todo={todo}
               onDeleteTodoItem={onDeleteTodoItem}
               onToggleTodoItem={onToggleTodoItem}

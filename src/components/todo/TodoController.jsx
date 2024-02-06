@@ -17,10 +17,10 @@ const TodoController = () => {
     // NOTE: filter 메서드를 사용하여 삭제할 아이템을 제외한 나머지 아이템만 반환 후 setTodos로 업데이트
     // HINT: `id`와 `todo.id`가 일치하지 않는 아이템만 반환
 
-    const afterDeleted = todos.filter((todo) => {
+    const afterDeletedTodoItem = todos.filter((todo) => {
       return todo.id !== id;
     });
-    setTodos(afterDeleted);
+    setTodos(afterDeletedTodoItem);
   };
 
   const onToggleTodoItem = (id) => {
@@ -28,7 +28,13 @@ const TodoController = () => {
     // TODO: 투두 리스트 completed(완료) 상태를 토글
     // NOTE: map 메서드를 사용하여 특정 아이템의 completed 상태를 토글 후 setTodos로 업데이트
     // HINT: `id`와 `todo.id`가 일치하는 아이템의 completed 상태를 토글
-  };
+
+    todos.filter((todo) => {
+      if (todo.id === id) {
+        setTodos([{ completed: !todo.completed }, ...todos]);
+      }
+    });
+  }; // todo의 complete 상태를 바꿔주기
 
   const onChangeSortOrder = (e) => {
     const nextSortOrder = e.target.value;
@@ -41,13 +47,22 @@ const TodoController = () => {
       // TODO: 투두 리스트 오름차순 정렬
       // NOTE: sort 메서드를 사용하여 `limit`을 기준으로 오름차순 정렬 후 setTodos로 업데이트
       // HINT: `new Date(todo.limit)`을 사용하여 정렬
-      return;
+      const ascTodos = todos.sort(
+        (a, b) => new Date(b.limit) - new Date(a.limit)
+      );
+      setTodos([...ascTodos]);
     }
 
     // SECTION: 3-2번 문제
     // TODO: 투두 리스트 내림차순 정렬
     // NOTE: sort 메서드를 사용하여 `limit`을 기준으로 내림차순 정렬 후 setTodos로 업데이트
     // HINT: `new Date(todo.limit)`을 사용하여 정렬
+    else if (sortOrder === "desc") {
+      const descTodos = todos.sort(
+        (a, b) => new Date(a.limit) - new Date(b.limit)
+      );
+      setTodos([...descTodos]);
+    }
   }, [sortOrder]);
 
   const workingTodos = todos.filter((todo) => !todo.completed);
